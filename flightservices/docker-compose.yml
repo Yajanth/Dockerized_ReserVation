@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  springboot-app:
+    image: flight_image
+    network_mode: host
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://localhost:3306/reservation"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "root@123"
+
