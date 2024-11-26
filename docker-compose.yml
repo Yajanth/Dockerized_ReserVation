@@ -1,42 +1,35 @@
-version: '3'
+version: '3.8'
+
 services:
-    product-app:
-        container_name: product-app
-        image: mgiblin/product_app
-        restart: on-failure
-        ports: 
-            - 10666:9090
-        environment: 
-            WAIT_HOSTS: mysql:3306
-        depends_on: 
-            - docker-mysql 
-            - coupon-app
-    coupon-app:
-        container_name: coupon-app
-        image: mgiblin/coupon_app
-        restart: on-failure
-        ports: 
-            - 10555:9091
-        environment: 
-            WAIT_HOSTS: mysql:3306
-        depends_on: 
-            - docker-mysql
-    docker-mysql:
-        container_name: docker-mysql
-        image: mysql
-        restart: always
-        environment: 
-            MYSQL_DATABASE: servicedb
-            MYSQL_ROOT_PASSWORD: test1234
-            MYSQL_ROOT_HOST: '%'
-        volumes:
-            - ./sql:/docker-entrypoint-initdb.d
-            - ./mysql-data:/var/lib/mysql
-        ports:
-            - 6666:3306
-        healthcheck:
-            test: "/usr/bin/mysql --user=root --password=test1234 --execute \"SHOW DATABASES \""
-            interval: 4s
-            timeout: 20s
-            retries: 5
-        
+  mysql:
+    image: flightdb
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root@123
+      MYSQL_DATABASE: reservation
+    healthcheck:
+    #   test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD"]
+      interval: 30s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    networks:
+        - flight-app-network
+    ports:
+      - "3307:3306"
+
+  springboot-app:
+    image: flight_image
+    container_name: springboot-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/reservation
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root@123
+    depends_on: 
+        - mysql
+    networks:
+        - flight-app-network
+
+networks:
+  flight-app-network:
+    driver: bridge
