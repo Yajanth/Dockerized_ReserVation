@@ -1,0 +1,40 @@
+# MySQL Configurations
+mysql:
+  rootPassword: "root@123"
+  database: "reservation"
+
+# Spring Boot Configurations
+sp# MySQL Configurations
+mysql:
+  rootPassword: "root@123"
+  database: "reservation"
+
+# Spring Boot Configurations
+springboot:
+  replicaCount: 3
+  image:
+    repository: "yajanthrr/flight-image"
+    tag: "v1"
+    pullPolicy: IfNotPresent
+
+# Service Configuration
+service:
+  port: 8080
+
+# Service Account Configuration
+serviceAccount:
+  create: true  # Ensure this is set if you're using a ServiceAccount
+ringboot:
+  replicaCount: 3
+  image:
+    repository: "yajanthrr/flight-image"
+    tag: "v1"
+    pullPolicy: IfNotPresent
+
+# Service Configuration
+service:
+  port: 8080
+
+# Service Account Configuration
+serviceAccount:
+  create: true  # Ensure this is set if you're using a ServiceAccount

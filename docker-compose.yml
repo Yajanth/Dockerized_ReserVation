@@ -3,12 +3,10 @@ version: '3.8'
 services:
   mysql:
     image: flightdb
-    container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: root@123
       MYSQL_DATABASE: reservation
     healthcheck:
-    #   test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD"]
       interval: 30s
       retries: 5
       start_period: 20s
@@ -20,7 +18,6 @@ services:
 
   springboot-app:
     image: flight_image
-    container_name: springboot-app
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/reservation
       SPRING_DATASOURCE_USERNAME: root
@@ -29,7 +26,21 @@ services:
         - mysql
     networks:
         - flight-app-network
-
+    ports:
+      - "8080:8080"
+  visualizer:
+    image: dockersamples/visualizer:latest
+    networks:
+      - flight-app-network
+    ports:
+      - "9091:8080"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  
 networks:
   flight-app-network:
-    driver: bridge
+    driver: overlay
