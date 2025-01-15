@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mysql:
-    image: flightdb
+    image: yajanthrr/flightdb
     environment:
       MYSQL_ROOT_PASSWORD: root@123
       MYSQL_DATABASE: reservation
