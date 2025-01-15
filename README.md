@@ -1,7 +1,5 @@
-<<<<<<< HEAD
+HEAD
 =======
-
->>>>>>> dfabdb9 (readmeUpdate)
 # Dockerized Flight Reservation App
 
 This project **Flight Reservation System** powered by a **Spring Boot** application and a **MySQL** database, all containerized using **Docker**. It is designed to set up and run a Spring Boot application with MySQL in a Dockerized environment.
