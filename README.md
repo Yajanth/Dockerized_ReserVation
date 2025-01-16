@@ -8,6 +8,7 @@ This project **Flight Reservation System** powered by a **Spring Boot** applicat
 - **Spring Boot** - Backend API for managing flight reservations.
 - **MySQL** - Database to store reservation data.
 - **Docker** - Containerization platform used to run the application and database.
+- **Multi-stage Docker Build** - Streamlines the build process using Maven in one stage and runs the final app in a minimal Java container
 
 ## Prerequisites
 
@@ -20,6 +21,9 @@ Before you begin, ensure you have the following installed on your system:
 
 - **springboot-app**: The Spring Boot application that exposes REST APIs for flight reservation management.
 - **MySQL Database**: Stores flight reservation data.
+- **docker-compose.yml**: Docker Compose file that sets up both the Spring Boot app and MySQL database containers.
+- **MySQL Database**: Stores flight reservation data.
+
 
 ## Getting Started
 
@@ -70,6 +74,17 @@ docker-compose down
 ```
 
 This will stop and remove the containers but keep the images intact.
+## Dockerfile Explanation
+### 1.Builder Stage:
+- Uses maven:3.8.4-openjdk-17-slim.
+- Copies pom.xml and runs mvn dependency:go-offline to cache dependencies (faster rebuilds).
+- Copies the source code and runs mvn package to produce the final .jar.
+
+### 2.Runtime Stage:
+- Uses a lightweight openjdk:17-alpine.
+- Copies the .jar from the builder stage.
+- Exposes port 8080 and starts the Spring Boot app.
+This approach keeps the final image size smaller because the Maven build tools are not included in the final image.
 
 ## Configuration
 
